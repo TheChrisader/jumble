@@ -10,12 +10,15 @@ const NavbarWrapper = styled.nav`
   height: 96px;
   background-color: ${(props) => props.theme.colors.main.white};
   color: ${(props) => props.theme.colors.text.primary};
+  border: 1px solid ${(props) => props.theme.colors.main.border};
 `;
 
 const NavbarLogoWrapper = styled.div`
   display: flex;
   align-items: center;
-  width: 300px;
+  min-width: 300px;
+  border-right: 1px solid ${(props) => props.theme.colors.main.border};
+  padding: 20px;
 `;
 
 const LogoText = styled.h1`

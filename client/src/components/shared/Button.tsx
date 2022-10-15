@@ -9,7 +9,7 @@ const Button = styled.button`
   font-weight: 500;
   border: none;
   border-radius: 20px;
-  padding: 10px 20px;
+  padding: 15px 20px;
   background-color: ${(props) => props.theme.colors.main.primary.default};
   height: fit-content;
   transition: background-color 0.25s ease;
