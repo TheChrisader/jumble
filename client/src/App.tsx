@@ -2,6 +2,7 @@ import { useState } from "react";
 import styled, { ThemeProvider } from "styled-components";
 import Navbar from "./components/Navbar";
 import Sidebar from "./components/Sidebar";
+import Main from "./pages/Main";
 
 import { lightTheme } from "./theme";
 
@@ -20,7 +21,7 @@ function App() {
     <ThemeProvider theme={lightTheme}>
       <AppWrapper>
         <Navbar />
-        <Sidebar setTheme={setThemeMode} />
+        <Main setTheme={setThemeMode} />
       </AppWrapper>
     </ThemeProvider>
   );

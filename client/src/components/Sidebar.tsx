@@ -9,12 +9,16 @@ interface ISidebar {
 const SidebarWrapper = styled.section`
   display: flex;
   flex-direction: column;
+  position: fixed;
+  left: 0;
   min-width: 300px;
   max-width: 300px;
-  height: 100%;
+  height: calc(100% - 96px);
   padding: 10px 25px;
   background-color: ${(props) => props.theme.colors.main.white};
   border: 1px solid ${(props) => props.theme.colors.main.border};
+  z-index: 20;
+  cursor: default;
 `;
 
 const BoardCount = styled.h3`

@@ -6,7 +6,7 @@ import Button from "./shared/Button";
 const NavbarWrapper = styled.nav`
   display: flex;
   align-items: center;
-  width: 100%;
+  width: 100vw;
   height: 96px;
   background-color: ${(props) => props.theme.colors.main.white};
   color: ${(props) => props.theme.colors.text.primary};
