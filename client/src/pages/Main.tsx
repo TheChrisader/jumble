@@ -4,9 +4,11 @@ import styled from "styled-components";
 
 import Board from "../components/Board";
 import Sidebar from "../components/Sidebar";
+import { IBoard } from "../utils/types/DataTypes";
 
 interface IMain {
   setTheme: React.Dispatch<React.SetStateAction<string>>;
+  data: IBoard[];
 }
 
 const Scroll = styled(ScrollContainer)`
@@ -16,7 +18,7 @@ const Scroll = styled(ScrollContainer)`
   cursor: move;
 `;
 
-const Main: React.FC<IMain> = ({ setTheme }) => {
+const Main: React.FC<IMain> = ({ data, setTheme }) => {
   return (
     <Scroll
       nativeMobileScroll={true}
@@ -24,8 +26,8 @@ const Main: React.FC<IMain> = ({ setTheme }) => {
       hideScrollbars={false}
       ignoreElements={".Card"}
     >
-      <Sidebar setTheme={setTheme} />
-      <Board />
+      <Sidebar boards={data} setTheme={setTheme} />
+      {data[0]?.columns && <Board board={data[0]} />}
     </Scroll>
   );
 };

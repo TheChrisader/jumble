@@ -1,9 +1,10 @@
 import React, { memo } from "react";
 import styled from "styled-components";
 import { Draggable } from "react-beautiful-dnd";
+import { ITask } from "../utils/types/DataTypes";
 
 interface ITaskComponent {
-  item: any;
+  task: ITask;
   index: number;
 }
 
@@ -36,9 +37,9 @@ const Subtasks = styled.span`
   font-weight: 500;
 `;
 
-const Task: React.FC<ITaskComponent> = ({ item, index }) => {
+const Task: React.FC<ITaskComponent> = ({ task, index }) => {
   return (
-    <Draggable key={item.id} draggableId={item.id} index={index}>
+    <Draggable key={task.id} draggableId={task.id} index={index}>
       {(provided, snapshot) => {
         return (
           <TaskCard
@@ -48,7 +49,7 @@ const Task: React.FC<ITaskComponent> = ({ item, index }) => {
             isDragging={snapshot.isDragging}
             className="Card"
           >
-            <TaskTitle>{item.content}</TaskTitle>
+            <TaskTitle>{task.title}</TaskTitle>
             <Subtasks>0 of 2 subtasks completed</Subtasks>
           </TaskCard>
         );

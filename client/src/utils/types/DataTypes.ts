@@ -4,7 +4,7 @@ export interface ISubtask {
 }
 
 export interface ITask {
-  id: number;
+  id: string;
   title?: string;
   description?: string;
   status?: string;
@@ -13,13 +13,51 @@ export interface ITask {
 }
 
 export interface IColumn {
-  id: number;
+  id: string;
   name: string;
-  tasks?: ITask[];
+  tasks: ITask[];
 }
 
 export interface IBoard {
   id: number;
   name: string;
   columns: IColumn[];
+}
+
+export interface ITheme {
+  mode: string;
+  colors: {
+    main: {
+      primary: {
+        default: string;
+        light: string;
+        dark: string;
+        border: string;
+        background: string;
+      };
+      success: {
+        default: string;
+        light: string;
+        dark: string;
+        border: string;
+        background: string;
+      };
+      danger: {
+        default: string;
+        light: string;
+        dark: string;
+        border: string;
+        background: string;
+      };
+      border: string;
+      background: string;
+      white: string;
+    };
+    text: {
+      primary: string;
+      secondary: string;
+      white: string;
+      black: string;
+    };
+  };
 }

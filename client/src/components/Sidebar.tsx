@@ -1,9 +1,11 @@
 import React from "react";
 import styled from "styled-components";
+import { IBoard } from "../utils/types/DataTypes";
 import ThemeToggle from "./ThemeToggle";
 
 interface ISidebar {
   setTheme: React.Dispatch<React.SetStateAction<string>>;
+  boards: IBoard[];
 }
 
 const SidebarWrapper = styled.section`
@@ -16,7 +18,8 @@ const SidebarWrapper = styled.section`
   height: calc(100% - 96px);
   padding: 10px 25px;
   background-color: ${(props) => props.theme.colors.main.white};
-  border: 1px solid ${(props) => props.theme.colors.main.border};
+  border-right: 1px solid ${(props) => props.theme.colors.main.border};
+  border-top: none;
   z-index: 20;
   cursor: default;
 `;
@@ -38,6 +41,7 @@ const BoardItem = styled.li`
   background-color: ${(props) => props.theme.colors.main.primary.default};
   color: ${(props) => props.theme.colors.text.white};
   padding: 10px;
+  margin-bottom: 10px;
 `;
 
 const CreateBoard = styled.div`
@@ -53,12 +57,14 @@ const HideWrapper = styled.div`
   margin-bottom: 10px;
 `;
 
-const Sidebar: React.FC<ISidebar> = ({ setTheme }) => {
+const Sidebar: React.FC<ISidebar> = ({ setTheme, boards }) => {
   return (
     <SidebarWrapper>
-      <BoardCount>ALL BOARDS (2)</BoardCount>
+      <BoardCount>ALL BOARDS ({boards.length})</BoardCount>
       <BoardList>
-        <BoardItem>Platform Launch</BoardItem>
+        {boards.map((board: IBoard, i) => (
+          <BoardItem key={i}>{board.name}</BoardItem>
+        ))}
         <CreateBoard>+Create a New Board</CreateBoard>
       </BoardList>
       <ThemeToggle setTheme={setTheme} />

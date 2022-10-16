@@ -1,5 +1,5 @@
-import React, { Dispatch } from "react";
-import styled, { StyledComponent } from "styled-components";
+import React from "react";
+import styled from "styled-components";
 
 interface IThemeToggle {
   setTheme: React.Dispatch<React.SetStateAction<string>>;

@@ -1,7 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { DragDropContext } from "react-beautiful-dnd";
+import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import Column from "./Column";
+import { IBoard, IColumn } from "../utils/types/DataTypes";
+
+interface IBoardComponent {
+  board: IBoard;
+}
 
 const BoardWrapper = styled.div`
   display: flex;
@@ -12,66 +17,72 @@ const BoardWrapper = styled.div`
   min-height: 100%;
 `;
 
-const status = {
-  0: {
-    name: "Requested",
-    items: [
-      { id: "0er", content: "First task" },
-      { id: "1er", content: "Second task" },
-      { id: "2er", content: "Third task" },
-      { id: "3er", content: "Fourth task" },
-    ],
-  },
-  1: {
-    name: "To do",
-    items: [],
-  },
-  2: {
-    name: "In Progress",
-    items: [],
-  },
-  3: {
-    name: "Done",
-    items: [],
-  },
-};
+const Board: React.FC<IBoardComponent> = ({ board }) => {
+  const [columns, setColumns] = useState<IColumn[]>([]);
 
-const Board = () => {
-  const [columns, setColumns] = useState(status);
+  useEffect(() => {
+    setColumns(board?.columns);
+  }, []);
 
-  const onDragEnd = (result: any, columns: any, setColumns: any) => {
+  const onDragEnd = (
+    result: DropResult,
+    columns: IColumn[],
+    setColumns: any
+  ) => {
     if (!result.destination) return;
+
     const { source, destination } = result;
+
+    const columnObject = columns.reduce((acc: any, value: any) => {
+      return { ...acc, [value.id]: value };
+    }, {});
+
     if (source.droppableId !== destination.droppableId) {
-      const sourceColumn = columns[source.droppableId];
-      const destColumn = columns[destination.droppableId];
-      const sourceItems = [...sourceColumn.items];
-      const destItems = [...destColumn.items];
-      const [removed] = sourceItems.splice(source.index, 1);
-      destItems.splice(destination.index, 0, removed);
-      setColumns({
-        ...columns,
-        [source.droppableId]: {
-          ...sourceColumn,
-          items: sourceItems,
-        },
-        [destination.droppableId]: {
-          ...destColumn,
-          items: destItems,
-        },
-      });
+      const sourceColumn = columns.find(
+        (column: IColumn) => column.id === source.droppableId
+      );
+      const sourceTasks = [...sourceColumn!.tasks];
+      const [removed] = sourceTasks.splice(source.index, 1);
+      const newSourceColumn = { ...sourceColumn, tasks: sourceTasks };
+
+      const destColumn = columns.find(
+        (column: IColumn) => column.id === destination.droppableId
+      );
+      const destTasks = [...destColumn!.tasks];
+      destTasks.splice(destination.index, 0, removed);
+      const newDestColumn = { ...destColumn, tasks: destTasks };
+
+      setColumns(
+        Object.values({
+          ...columnObject,
+          [source.droppableId]: newSourceColumn,
+          [destination.droppableId]: newDestColumn,
+        })
+      );
     } else {
-      const column = columns[source.droppableId];
-      const copiedItems = [...column.items];
-      const [removed] = copiedItems.splice(source.index, 1);
-      copiedItems.splice(destination.index, 0, removed);
-      setColumns({
-        ...columns,
-        [source.droppableId]: {
-          ...column,
-          items: copiedItems,
-        },
-      });
+      const column = columns.find(
+        (column: IColumn) => column.id === source.droppableId
+      );
+
+      const columnObject = columns.reduce((acc: any, value: any) => {
+        return { ...acc, [value.id]: value };
+      }, {});
+
+      const copiedTasks = [...column!.tasks];
+
+      const [removed] = copiedTasks.splice(source.index, 1);
+
+      copiedTasks.splice(destination.index, 0, removed);
+
+      setColumns(
+        Object.values({
+          ...columnObject,
+          [source.droppableId]: {
+            ...column,
+            tasks: copiedTasks,
+          },
+        })
+      );
     }
   };
   return (
@@ -79,16 +90,17 @@ const Board = () => {
       <DragDropContext
         onDragEnd={(result) => onDragEnd(result, columns, setColumns)}
       >
-        {Object.entries(columns).map(([columnId, column], index) => {
-          return (
-            <Column
-              droppableId={columnId}
-              key={columnId}
-              index={index}
-              column={column}
-            />
-          );
-        })}
+        {columns[0] &&
+          columns.map((column, index) => {
+            return (
+              <Column
+                droppableId={column.id}
+                key={column.id}
+                index={index}
+                column={column}
+              />
+            );
+          })}
       </DragDropContext>
     </BoardWrapper>
   );

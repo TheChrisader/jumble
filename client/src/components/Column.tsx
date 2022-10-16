@@ -3,10 +3,11 @@ import styled from "styled-components";
 import { Droppable } from "react-beautiful-dnd";
 
 import Task from "./Task";
+import { IColumn } from "../utils/types/DataTypes";
 
 interface IColumnComponent {
-  droppableId: any;
-  column: any;
+  droppableId: string;
+  column: IColumn;
   index: any;
 }
 
@@ -43,18 +44,18 @@ const Column: React.FC<IColumnComponent> = ({ droppableId, column, index }) => {
   return (
     <ColumnWrapper>
       <ColumnHeader>
-        {column.name}({column.items.length})
+        {column.name}({column.tasks.length})
       </ColumnHeader>
       <Droppable droppableId={droppableId} key={droppableId}>
         {(provided, snapshot) => {
           return (
             <TasksWrapper
-              empty={column.items.length === 0}
+              empty={column.tasks.length === 0}
               {...provided.droppableProps}
               ref={provided.innerRef}
             >
-              {column?.items?.map((item: any, index: number) => {
-                return <Task key={item.id} item={item} index={index} />;
+              {column?.tasks?.map((task: any, index: number) => {
+                return <Task key={task.id} task={task} index={index} />;
               })}
               {provided.placeholder}
             </TasksWrapper>
