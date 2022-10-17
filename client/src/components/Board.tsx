@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import Column from "./Column";
@@ -12,22 +12,17 @@ const BoardWrapper = styled.div`
   display: flex;
   position: absolute;
   left: 300px;
-  padding: 30px;
-  gap: 20px;
+  padding: 40px;
+  gap: 35px;
   min-height: 100%;
 `;
 
 const Board: React.FC<IBoardComponent> = () => {
-  // const [columns, setColumns] = useState<IColumn[]>([]);
   const boardTab = useDataStore((state: any) => state.boardTab);
   const board = useDataStore((state: any) =>
     state.data.find((b: any) => b.name === boardTab)
   );
   const setTasks = useDataStore((state: any) => state.setTasks);
-
-  // useEffect(() => {
-  //   setColumns(board?.columns);
-  // }, []);
 
   const onDragEnd = (result: DropResult, columns: IColumn[], setTasks: any) => {
     if (!result.destination) return;
