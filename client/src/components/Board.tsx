@@ -3,10 +3,9 @@ import styled from "styled-components";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import Column from "./Column";
 import { IBoard, IColumn } from "../utils/types/DataTypes";
+import { useDataStore } from "../store/store";
 
-interface IBoardComponent {
-  board: IBoard;
-}
+interface IBoardComponent {}
 
 const BoardWrapper = styled.div`
   display: flex;
@@ -17,18 +16,19 @@ const BoardWrapper = styled.div`
   min-height: 100%;
 `;
 
-const Board: React.FC<IBoardComponent> = ({ board }) => {
-  const [columns, setColumns] = useState<IColumn[]>([]);
+const Board: React.FC<IBoardComponent> = () => {
+  // const [columns, setColumns] = useState<IColumn[]>([]);
+  const boardTab = useDataStore((state: any) => state.boardTab);
+  const board = useDataStore((state: any) =>
+    state.data.find((b: any) => b.name === boardTab)
+  );
+  const setTasks = useDataStore((state: any) => state.setTasks);
 
-  useEffect(() => {
-    setColumns(board?.columns);
-  }, []);
+  // useEffect(() => {
+  //   setColumns(board?.columns);
+  // }, []);
 
-  const onDragEnd = (
-    result: DropResult,
-    columns: IColumn[],
-    setColumns: any
-  ) => {
+  const onDragEnd = (result: DropResult, columns: IColumn[], setTasks: any) => {
     if (!result.destination) return;
 
     const { source, destination } = result;
@@ -42,23 +42,26 @@ const Board: React.FC<IBoardComponent> = ({ board }) => {
         (column: IColumn) => column.id === source.droppableId
       );
       const sourceTasks = [...sourceColumn!.tasks];
-      const [removed] = sourceTasks.splice(source.index, 1);
+      const [task] = sourceTasks.splice(source.index, 1);
       const newSourceColumn = { ...sourceColumn, tasks: sourceTasks };
 
       const destColumn = columns.find(
         (column: IColumn) => column.id === destination.droppableId
       );
       const destTasks = [...destColumn!.tasks];
-      destTasks.splice(destination.index, 0, removed);
+      destTasks.splice(destination.index, 0, task);
       const newDestColumn = { ...destColumn, tasks: destTasks };
 
-      setColumns(
-        Object.values({
+      const newBoard = {
+        ...board,
+        columns: Object.values({
           ...columnObject,
           [source.droppableId]: newSourceColumn,
           [destination.droppableId]: newDestColumn,
-        })
-      );
+        }),
+      };
+
+      setTasks(board.id, newBoard, task, destination.droppableId);
     } else {
       const column = columns.find(
         (column: IColumn) => column.id === source.droppableId
@@ -70,37 +73,39 @@ const Board: React.FC<IBoardComponent> = ({ board }) => {
 
       const copiedTasks = [...column!.tasks];
 
-      const [removed] = copiedTasks.splice(source.index, 1);
+      const [task] = copiedTasks.splice(source.index, 1);
 
-      copiedTasks.splice(destination.index, 0, removed);
+      copiedTasks.splice(destination.index, 0, task);
 
-      setColumns(
-        Object.values({
+      const newBoard = {
+        ...board,
+        columns: Object.values({
           ...columnObject,
           [source.droppableId]: {
             ...column,
             tasks: copiedTasks,
           },
-        })
-      );
+        }),
+      };
+
+      setTasks(board.id, newBoard, task, source.droppableId);
     }
   };
   return (
     <BoardWrapper>
       <DragDropContext
-        onDragEnd={(result) => onDragEnd(result, columns, setColumns)}
+        onDragEnd={(result) => onDragEnd(result, board.columns, setTasks)}
       >
-        {columns[0] &&
-          columns.map((column, index) => {
-            return (
-              <Column
-                droppableId={column.id}
-                key={column.id}
-                index={index}
-                column={column}
-              />
-            );
-          })}
+        {board.columns.map((column: IColumn, index: number) => {
+          return (
+            <Column
+              droppableId={column.id}
+              key={column.id}
+              index={index}
+              column={column}
+            />
+          );
+        })}
       </DragDropContext>
     </BoardWrapper>
   );

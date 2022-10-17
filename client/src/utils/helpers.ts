@@ -9,3 +9,7 @@ export const updateTheme = (mode: string, ...args: ITheme[]) => {
     return args[0];
   }
 };
+
+export const checkStorageKey = (key: string) => {
+  return localStorage.getItem(key);
+};

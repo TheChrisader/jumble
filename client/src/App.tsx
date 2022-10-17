@@ -5,7 +5,9 @@ import Main from "./pages/Main";
 
 import { lightTheme } from "./theme";
 import { ITheme } from "./utils/types/DataTypes";
-import { updateTheme } from "./utils/helpers";
+import { checkStorageKey, updateTheme } from "./utils/helpers";
+import { useThemeStore } from "./store/themeStore";
+import { useDataStore } from "./store/store";
 
 const AppWrapper = styled.div`
   display: flex;
@@ -16,25 +18,32 @@ const AppWrapper = styled.div`
 `;
 
 function App() {
-  const [themeMode, setThemeMode] = useState("lightTheme");
-  const [theme, setTheme] = useState<ITheme>(lightTheme);
   const [data, setData] = useState<any>([]);
+
+  const theme = useThemeStore((state: any) => state.theme);
+  const boards = useDataStore((state: any) => state.data);
+  const setBoards = useDataStore((state: any) => state.setData);
+  const setTab = useDataStore((state: any) => state.setTab);
 
   const fetchData = async () => {
     const response = await import("./utils/data.json");
     setData(response.boards);
+    setBoards(response.boards);
+    setTab(response.boards[0].name);
   };
 
   useEffect(() => {
-    setTheme(updateTheme(themeMode, lightTheme));
-    fetchData();
-  }, [themeMode]);
+    const dataStorage = checkStorageKey("data");
+    if (!dataStorage || boards.length === 0) {
+      fetchData();
+    }
+  }, [theme]);
 
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider theme={updateTheme(theme, lightTheme)}>
       <AppWrapper>
         <Navbar />
-        <Main data={data} setTheme={setThemeMode} />
+        <Main data={boards} />
       </AppWrapper>
     </ThemeProvider>
   );

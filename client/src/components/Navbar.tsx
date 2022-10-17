@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { useDataStore } from "../store/store";
 
 import Button from "./shared/Button";
 
@@ -50,13 +51,14 @@ const ButtonText = styled.span`
 const Options = styled.div``;
 
 const Navbar = () => {
+  const boardTab = useDataStore((state: any) => state.boardTab);
   return (
     <NavbarWrapper>
       <NavbarLogoWrapper>
         <LogoText>frugal</LogoText>
       </NavbarLogoWrapper>
       <Header>
-        <Tab>Platform Launch</Tab>
+        <Tab>{boardTab}</Tab>
         <OptionsWrapper>
           <Button>
             <ButtonText>Add New Task</ButtonText>

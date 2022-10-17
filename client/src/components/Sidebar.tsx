@@ -1,11 +1,13 @@
 import React from "react";
 import styled from "styled-components";
+import { useDataStore } from "../store/store";
 import { IBoard } from "../utils/types/DataTypes";
 import ThemeToggle from "./ThemeToggle";
 
-interface ISidebar {
-  setTheme: React.Dispatch<React.SetStateAction<string>>;
-  boards: IBoard[];
+interface ISidebar {}
+
+interface IBoardItem {
+  selected: boolean;
 }
 
 const SidebarWrapper = styled.section`
@@ -32,16 +34,34 @@ const BoardCount = styled.h3`
 `;
 
 const BoardList = styled.ul`
+  display: flex;
+  flex-direction: column;
   width: 100%;
   margin-bottom: auto;
   list-style: none;
 `;
 
-const BoardItem = styled.li`
-  background-color: ${(props) => props.theme.colors.main.primary.default};
-  color: ${(props) => props.theme.colors.text.white};
+const BoardItem = styled.button<IBoardItem>`
+  background-color: ${(props) =>
+    props.selected ? props.theme.colors.main.primary.default : "transparent"};
+  color: ${(props) =>
+    props.selected
+      ? props.theme.colors.text.white
+      : props.theme.colors.text.secondary};
+  border: none;
   padding: 10px;
   margin-bottom: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+
+  &:hover {
+    background-color: ${(props) =>
+      props.selected
+        ? props.theme.colors.main.primary.default
+        : props.theme.colors.main.primary.light};
+    color: white;
+  }
 `;
 
 const CreateBoard = styled.div`
@@ -57,17 +77,26 @@ const HideWrapper = styled.div`
   margin-bottom: 10px;
 `;
 
-const Sidebar: React.FC<ISidebar> = ({ setTheme, boards }) => {
+const Sidebar: React.FC<ISidebar> = () => {
+  const boards = useDataStore((state: any) => state.data);
+  const boardTab = useDataStore((state: any) => state.boardTab);
+  const setTab = useDataStore((state: any) => state.setTab);
   return (
     <SidebarWrapper>
       <BoardCount>ALL BOARDS ({boards.length})</BoardCount>
       <BoardList>
-        {boards.map((board: IBoard, i) => (
-          <BoardItem key={i}>{board.name}</BoardItem>
+        {boards.map((board: IBoard, i: number) => (
+          <BoardItem
+            selected={boardTab === board.name}
+            key={i}
+            onClick={() => setTab(board.name)}
+          >
+            {board.name}
+          </BoardItem>
         ))}
         <CreateBoard>+Create a New Board</CreateBoard>
       </BoardList>
-      <ThemeToggle setTheme={setTheme} />
+      <ThemeToggle />
       <HideWrapper>Hide Sidebar</HideWrapper>
     </SidebarWrapper>
   );

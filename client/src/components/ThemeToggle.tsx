@@ -1,9 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-
-interface IThemeToggle {
-  setTheme: React.Dispatch<React.SetStateAction<string>>;
-}
+import { useThemeStore } from "../store/themeStore";
 
 const ToggleWrapper = styled.div`
   background-color: ${(props) => props.theme.colors.main.primary.background};
@@ -44,14 +41,15 @@ const themeColorArray = [
   },
 ];
 
-const ThemeToggle: React.FC<IThemeToggle> = ({ setTheme }) => {
+const ThemeToggle = () => {
+  const toggleTheme = useThemeStore((state: any) => state.toggleTheme);
   return (
     <ToggleWrapper>
       {themeColorArray.map((item: typeof themeColorArray[0]) => (
         <ColorItem
           key={item.id}
           color={item.color}
-          onClick={() => setTheme(item.name)}
+          onClick={() => toggleTheme(item.name)}
         />
       ))}
     </ToggleWrapper>
