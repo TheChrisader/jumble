@@ -49,6 +49,7 @@ const BoardItem = styled.button<IBoardItem>`
       ? props.theme.colors.text.white
       : props.theme.colors.text.secondary};
   border: none;
+  border-radius: 10px;
   padding: 10px;
   margin-bottom: 10px;
   font-size: 16px;
@@ -59,8 +60,7 @@ const BoardItem = styled.button<IBoardItem>`
     background-color: ${(props) =>
       props.selected
         ? props.theme.colors.main.primary.default
-        : props.theme.colors.main.primary.light};
-    color: white;
+        : props.theme.colors.main.primary.background};
   }
 `;
 

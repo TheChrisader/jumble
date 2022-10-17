@@ -4,6 +4,7 @@ import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import Column from "./Column";
 import { IBoard, IColumn } from "../utils/types/DataTypes";
 import { useDataStore } from "../store/store";
+import AddColumn from "./AddColumn";
 
 interface IBoardComponent {}
 
@@ -94,9 +95,9 @@ const Board: React.FC<IBoardComponent> = () => {
   return (
     <BoardWrapper>
       <DragDropContext
-        onDragEnd={(result) => onDragEnd(result, board.columns, setTasks)}
+        onDragEnd={(result) => onDragEnd(result, board?.columns, setTasks)}
       >
-        {board.columns.map((column: IColumn, index: number) => {
+        {board?.columns?.map((column: IColumn, index: number) => {
           return (
             <Column
               droppableId={column.id}
@@ -107,6 +108,7 @@ const Board: React.FC<IBoardComponent> = () => {
           );
         })}
       </DragDropContext>
+      <AddColumn />
     </BoardWrapper>
   );
 };
