@@ -8,6 +8,8 @@ import { ITheme } from "./utils/types/DataTypes";
 import { checkStorageKey, updateTheme } from "./utils/helpers";
 import { useThemeStore } from "./store/themeStore";
 import { useDataStore } from "./store/store";
+import Modal from "./components/shared/Modal";
+import DeleteTask from "./components/Modals/DeleteTask";
 
 const AppWrapper = styled.div`
   display: flex;
@@ -18,8 +20,6 @@ const AppWrapper = styled.div`
 `;
 
 function App() {
-  const [data, setData] = useState<any>([]);
-
   const theme = useThemeStore((state: any) => state.theme);
   const boards = useDataStore((state: any) => state.data);
   const setBoards = useDataStore((state: any) => state.setData);
@@ -27,7 +27,6 @@ function App() {
 
   const fetchData = async () => {
     const response = await import("./utils/data.json");
-    setData(response.boards);
     setBoards(response.boards);
     setTab(response.boards[0].name);
   };
@@ -42,6 +41,9 @@ function App() {
   return (
     <ThemeProvider theme={updateTheme(theme, lightTheme)}>
       <AppWrapper>
+        <Modal>
+          <DeleteTask />
+        </Modal>
         <Navbar />
         <Main data={boards} />
       </AppWrapper>
