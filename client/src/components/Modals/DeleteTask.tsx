@@ -44,8 +44,8 @@ const DeleteTask: React.FC<IDelete> = ({ type, name }) => {
         reversed.
       </DeleteText>
       <ButtonsContainer>
-        <Buttons color="danger">Delete</Buttons>
         <Buttons variant="outlined">Cancel</Buttons>
+        <Buttons color="danger">Delete</Buttons>
       </ButtonsContainer>
     </DeleteTaskContainer>
   );
