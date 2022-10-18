@@ -36,7 +36,7 @@ const DropIcon = styled(FaEllipsisV)`
 const OptionsWrapper = styled.div`
   position: absolute;
   top: 180%;
-  left: -350%;
+  left: -450%;
   display: flex;
   gap: 5px;
   align-items: flex-start;
@@ -45,6 +45,7 @@ const OptionsWrapper = styled.div`
   background-color: ${(props) => props.theme.colors.main.background};
   padding: 10px;
   border-radius: 10px;
+  box-shadow: 0 5px 10px 5px rgb(0 0 0 / 10%), 0 1px 2px 0 rgb(0 0 0 / 6%);
 `;
 
 const Option = styled.button`
