@@ -42,7 +42,7 @@ function App() {
     <ThemeProvider theme={updateTheme(theme, lightTheme)}>
       <AppWrapper>
         <Modal>
-          <DeleteTask />
+          <DeleteTask name="Task Master" type="Task" />
         </Modal>
         <Navbar />
         <Main data={boards} />

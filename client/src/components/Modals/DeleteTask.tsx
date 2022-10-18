@@ -3,6 +3,11 @@ import styled from "styled-components";
 
 import Button from "../shared/Button";
 
+interface IDelete {
+  type: string;
+  name: string;
+}
+
 const DeleteTaskContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -10,31 +15,37 @@ const DeleteTaskContainer = styled.div`
 
 const DeleteTitle = styled.h2`
   font-weight: 600;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   color: ${(props) => props.theme.colors.main.danger.light};
 `;
 
 const DeleteText = styled.p`
   color: ${(props) => props.theme.colors.text.secondary};
-  margin-bottom: 20px;
+  margin-bottom: 25px;
 `;
 
 const ButtonsContainer = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
 `;
 
-const DeleteTask = () => {
+const Buttons = styled(Button)`
+  width: 250px;
+`;
+
+const DeleteTask: React.FC<IDelete> = ({ type, name }) => {
   return (
     <DeleteTaskContainer>
-      <DeleteTitle>Delete this Task</DeleteTitle>
+      <DeleteTitle>Delete this {type}</DeleteTitle>
       <DeleteText>
-        Are you sure you want to delete the 'Build UI for search' board? This
-        action will remove all columns and tasks and cannot be reversed.
+        Are you sure you want to delete the '{name}' {type.toLowerCase()}? This
+        action will remove{" "}
+        {type === "Board" ? "all columns and tasks" : "this task"} and cannot be
+        reversed.
       </DeleteText>
       <ButtonsContainer>
-        <Button>Delete</Button>
-        <Button>Cancel</Button>
+        <Buttons color="danger">Delete</Buttons>
+        <Buttons variant="outlined">Cancel</Buttons>
       </ButtonsContainer>
     </DeleteTaskContainer>
   );

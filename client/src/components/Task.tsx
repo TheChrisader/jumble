@@ -19,7 +19,7 @@ const TaskCard = styled.div<ITaskCard>`
   background-color: ${(props) => props.theme.colors.main.white};
   color: ${(props) => props.theme.colors.text.primary};
   border-radius: 10px;
-  box-shadow: 6px 18px 10px -13px rgba(161, 159, 159, 0.3);
+  box-shadow: 0 5px 5px 0 rgb(0 0 0 / 10%), 0 1px 2px 0 rgb(0 0 0 / 6%);
   cursor: drag;
   border: 1px solid ${(props) => props.theme.colors.main.border};
   margin-bottom: 20px;
