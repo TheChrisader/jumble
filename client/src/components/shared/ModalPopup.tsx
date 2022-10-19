@@ -13,7 +13,9 @@ const Popup = styled.div`
   color: ${(props) => props.theme.colors.text.primary};
   border-radius: 10px;
   z-index: 51;
-  width: 50%;
+  width: 40%;
+  max-height: 100%;
+  overflow-y: auto;
   transition: width 0.5s ease;
 
   @media screen and (max-width: 800px) {
@@ -27,12 +29,12 @@ const Popup = styled.div`
 
 const CloseModal = styled.button`
   position: absolute;
-  top: 18px;
-  right: 12px;
+  top: 12px;
+  right: 15px;
   border: none;
   background-color: transparent;
   padding: 0;
-  font-size: 20px;
+  font-size: 25px;
   color: ${(props) => props.theme.colors.main.primary.default};
   cursor: pointer;
   transform-origin: center;

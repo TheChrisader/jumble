@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 interface ICheckbox {
   children: string;
-  checked: boolean;
+  checked?: boolean;
 }
 
 interface ILabel {
@@ -13,14 +13,14 @@ interface ILabel {
 const Label = styled.label<ILabel>`
   display: flex;
   align-items: center;
-  padding: 15px;
-  background-color: ${(props) => props.theme.colors.main.background};
+  padding: 5px 15px;
+  background-color: ${(props) => props.theme.colors.main.white};
   color: ${(props) =>
     props.checked
       ? props.theme.colors.text.secondary
       : props.theme.colors.text.primary};
-  border-radius: 15px;
-  margin-bottom: 5px;
+  border-radius: 5px;
+  margin-bottom: 10px;
   font-size: inherit;
   font-weight: inherit;
   user-select: none;
@@ -28,9 +28,10 @@ const Label = styled.label<ILabel>`
   text-decoration-color: ${(props) =>
     props.checked ? props.theme.colors.text.secondary : "transparent"};
   cursor: pointer;
+  transition: background-color 0.25s;
 
   &:hover {
-    background-color: ${(props) => props.theme.colors.main.white};
+    background-color: ${(props) => props.theme.colors.main.background};
   }
 
   & > input[type="checkbox"] {
@@ -46,6 +47,7 @@ const Label = styled.label<ILabel>`
     height: 16px;
     border: 1px solid ${(props) => props.theme.colors.main.primary.default};
     border-radius: 2px;
+    transition: background-color 0.25s, transform 0.25s;
 
     &:checked {
       border: 0;

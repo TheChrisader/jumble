@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useCallback } from "react";
 import styled from "styled-components";
 import { FaChevronDown } from "react-icons/fa";
+
+import useOnClickOutside from "../../utils/hooks/useOnClickOutside";
 
 interface ISelect {
   options: string[];
@@ -14,7 +16,7 @@ interface ITrigger {
 
 const SelectWrapper = styled.div`
   display: flex;
-  width: 250px;
+  width: 100%;
   position: relative;
 `;
 
@@ -29,8 +31,8 @@ const Trigger = styled.button<ITrigger>`
   border: 1px solid
     ${(props) =>
       props.open
-        ? props.theme.colors.main.primary.default
-        : props.theme.colors.text.secondary};
+        ? props.theme.colors.main.primary.background
+        : props.theme.colors.main.background};
   padding: 8px 15px;
   text-transform: capitalize;
   transition: border 0.25s ease;
@@ -53,8 +55,7 @@ const TriggerText = styled.span<ITrigger>`
 `;
 
 const TriggerIcon = styled(FaChevronDown)<ITrigger>`
-  color: ${(props) =>
-    props.open ? props.theme.colors.main.primary.default : "inherit"};
+  color: ${(props) => props.theme.colors.main.primary.default};
   transform: ${(props) => (props.open ? "rotate(180deg)" : "none")};
   transition: transform 0.35s, color 0.5s;
 `;
@@ -63,17 +64,22 @@ const OptionsWrapper = styled.div`
   position: absolute;
   display: flex;
   align-items: flex-start;
-  gap: 10px;
+  gap: 5px;
   width: 100%;
+  max-height: 150px;
   flex-direction: column;
   height: fit-content;
-  bottom: -300%;
+  /* bottom: -300%; */
+  bottom: 40px;
+  /* transform: translateY(40px); */
   border-radius: 5px;
   padding: 10px;
-  background-color: ${(props) => props.theme.colors.main.background};
+  background-color: ${(props) => props.theme.colors.main.white};
   white-space: nowrap;
   text-overflow: ellipsis;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
+  box-shadow: 0 5px 10px 5px rgb(0 0 0 / 10%), 0 1px 2px 0 rgb(0 0 0 / 6%);
 `;
 
 const Option = styled.button`
@@ -86,7 +92,7 @@ const Option = styled.button`
   background-color: transparent;
   border: none;
   cursor: pointer;
-  border-radius: 10px;
+  border-radius: 5px;
 
   &:hover {
     background-color: ${(props) => props.theme.colors.main.primary.background};
@@ -97,13 +103,24 @@ const OptionText = styled.span``;
 
 const Select: React.FC<ISelect> = ({ options, status, setStatus }) => {
   const [open, setOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   const handleChange = (item: string) => {
     setStatus(item);
     setOpen(false);
   };
+
+  const handleClickOutside = useCallback(() => {
+    setOpen(false);
+  }, []);
+
+  useOnClickOutside(
+    dropdownRef as React.MutableRefObject<HTMLDivElement>,
+    handleClickOutside
+  );
+
   return (
-    <SelectWrapper>
+    <SelectWrapper ref={dropdownRef}>
       <Trigger role="combobox" open={open} onClick={() => setOpen(!open)}>
         <TriggerText open={open}>{status}</TriggerText>
         <TriggerIcon open={open} />

@@ -10,6 +10,7 @@ import { useThemeStore } from "./store/themeStore";
 import { useDataStore } from "./store/store";
 import Modal from "./components/shared/Modal";
 import DeleteTask from "./components/Modals/DeleteTask";
+import ViewTask from "./components/Modals/ViewTask";
 
 const AppWrapper = styled.div`
   display: flex;
@@ -42,7 +43,8 @@ function App() {
     <ThemeProvider theme={updateTheme(theme, lightTheme)}>
       <AppWrapper>
         <Modal>
-          <DeleteTask name="Task Master" type="Task" />
+          {/* <DeleteTask name="Task Master" type="Task" /> */}
+          <ViewTask />
         </Modal>
         <Navbar />
         <Main data={boards} />

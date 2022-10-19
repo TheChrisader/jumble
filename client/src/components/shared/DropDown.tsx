@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import styled from "styled-components";
 import { FaEllipsisV } from "react-icons/fa";
+import useOnClickOutside from "../../utils/hooks/useOnClickOutside";
 
 interface IDropDown {
   text: string;
@@ -42,8 +43,8 @@ const OptionsWrapper = styled.div`
   align-items: flex-start;
   flex-direction: column;
   width: 200px;
-  background-color: ${(props) => props.theme.colors.main.background};
-  padding: 10px;
+  background-color: ${(props) => props.theme.colors.main.white};
+  padding: 5px;
   border-radius: 10px;
   box-shadow: 0 5px 10px 5px rgb(0 0 0 / 10%), 0 1px 2px 0 rgb(0 0 0 / 6%);
 `;
@@ -61,15 +62,25 @@ const Option = styled.button`
   transition: background-color 0.25s ease;
 
   &:hover {
-    background-color: ${(props) => props.theme.colors.main.primary.background};
+    background-color: ${(props) => props.theme.colors.main.background};
   }
 `;
 
 const DropDown = () => {
   const [openDropDown, setOpenDropDown] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  const handleOutsideClick = useCallback(() => {
+    setOpenDropDown(false);
+  }, []);
+
+  useOnClickOutside(
+    dropdownRef as React.MutableRefObject<HTMLDivElement>,
+    handleOutsideClick
+  );
 
   return (
-    <DropDownWrapper>
+    <DropDownWrapper ref={dropdownRef}>
       <DropButton
         type="button"
         onClick={() => setOpenDropDown((prev) => !prev)}

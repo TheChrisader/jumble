@@ -24,7 +24,7 @@ export const lightTheme = {
         background: "#ec57571c",
       },
       border: "#e0e0e06c",
-      background: "#F8F8FB",
+      background: "#e9e9ec",
       white: "#FFFFFF",
     },
     text: {
