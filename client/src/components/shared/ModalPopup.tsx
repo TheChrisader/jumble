@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { FaTimes } from "react-icons/fa";
+import { useModalStore } from "../../store/modalStore";
 
 interface IPopup {
   children: JSX.Element;
@@ -47,9 +48,10 @@ const CloseModal = styled.button`
 `;
 
 const ModalPopup: React.FC<IPopup> = ({ children }) => {
+  const closeModal = useModalStore((state: any) => state.closeModal);
   return (
     <Popup>
-      <CloseModal>
+      <CloseModal onClick={closeModal}>
         <FaTimes />
       </CloseModal>
       {children}

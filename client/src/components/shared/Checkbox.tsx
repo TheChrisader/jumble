@@ -18,7 +18,7 @@ const Label = styled.label<ILabel>`
   color: ${(props) =>
     props.checked
       ? props.theme.colors.text.secondary
-      : props.theme.colors.text.primary};
+      : props.theme.colors.main.primary.dark};
   border-radius: 5px;
   margin-bottom: 10px;
   font-size: inherit;

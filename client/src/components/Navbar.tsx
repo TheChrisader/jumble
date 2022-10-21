@@ -1,8 +1,10 @@
 import React from "react";
 import styled from "styled-components";
-import { useDataStore } from "../store/store";
 
+import { useDataStore } from "../store/store";
+import { useModalStore } from "../store/modalStore";
 import Button from "./shared/Button";
+import DropDown from "./shared/DropDown";
 
 const NavbarWrapper = styled.nav`
   display: flex;
@@ -41,6 +43,7 @@ const Tab = styled.h1`
 const OptionsWrapper = styled.div`
   display: flex;
   align-items: center;
+  gap: 20px;
 `;
 
 const ButtonText = styled.span`
@@ -48,10 +51,10 @@ const ButtonText = styled.span`
   font-weight: 600;
 `;
 
-const Options = styled.div``;
-
 const Navbar = () => {
-  const boardTab = useDataStore((state: any) => state.boardTab);
+  const { boardTab, currentBoardStatus } = useDataStore((state: any) => state);
+  const { openModal } = useModalStore((state: any) => state);
+
   return (
     <NavbarWrapper>
       <NavbarLogoWrapper>
@@ -60,10 +63,22 @@ const Navbar = () => {
       <Header>
         <Tab>{boardTab}</Tab>
         <OptionsWrapper>
-          <Button>
+          <Button
+            onClick={() =>
+              openModal({
+                type: "New Task",
+                statusArr: currentBoardStatus,
+                boardTab: boardTab,
+              })
+            }
+          >
             <ButtonText>Add New Task</ButtonText>
           </Button>
-          <Options></Options>
+          <DropDown
+            text="board"
+            onClickEdit={() => openModal({ type: "Edit Board" })}
+            onClickDelete={() => openModal({ type: "Delete Board" })}
+          />
         </OptionsWrapper>
       </Header>
     </NavbarWrapper>

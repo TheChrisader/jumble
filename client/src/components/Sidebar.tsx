@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { useModalStore } from "../store/modalStore";
 import { useDataStore } from "../store/store";
 import { IBoard } from "../utils/types/DataTypes";
 import ThemeToggle from "./ThemeToggle";
@@ -39,6 +40,7 @@ const BoardList = styled.ul`
   width: 100%;
   margin-bottom: auto;
   list-style: none;
+  padding: 0;
 `;
 
 const BoardItem = styled.button<IBoardItem>`
@@ -55,6 +57,7 @@ const BoardItem = styled.button<IBoardItem>`
   font-size: 16px;
   font-weight: 600;
   cursor: pointer;
+  transition: background-color 0.5s;
 
   &:hover {
     background-color: ${(props) =>
@@ -64,9 +67,23 @@ const BoardItem = styled.button<IBoardItem>`
   }
 `;
 
-const CreateBoard = styled.div`
+const CreateBoard = styled.button`
   color: ${(props) => props.theme.colors.main.primary.default};
+  padding: 10px;
+  border-radius: 10px;
   margin-top: 10px;
+  text-align: center;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.5s, font-size 0.5s;
+
+  &:hover,
+  &:focus {
+    background-color: ${(props) => props.theme.colors.main.background};
+    font-weight: 600;
+    font-size: 16px;
+  }
 `;
 
 const HideWrapper = styled.div`
@@ -81,6 +98,8 @@ const Sidebar: React.FC<ISidebar> = () => {
   const boards = useDataStore((state: any) => state.data);
   const boardTab = useDataStore((state: any) => state.boardTab);
   const setTab = useDataStore((state: any) => state.setTab);
+  const setStatus = useDataStore((state: any) => state.setCurrentStatus);
+  const openModal = useModalStore((state: any) => state.openModal);
   return (
     <SidebarWrapper>
       <BoardCount>ALL BOARDS ({boards.length})</BoardCount>
@@ -89,12 +108,17 @@ const Sidebar: React.FC<ISidebar> = () => {
           <BoardItem
             selected={boardTab === board.name}
             key={i}
-            onClick={() => setTab(board.name)}
+            onClick={() => {
+              setTab(board.name);
+              setStatus(board.name);
+            }}
           >
             {board.name}
           </BoardItem>
         ))}
-        <CreateBoard>+Create a New Board</CreateBoard>
+        <CreateBoard onClick={() => openModal({ type: "New Board" })}>
+          +Create a New Board
+        </CreateBoard>
       </BoardList>
       <ThemeToggle />
       <HideWrapper>Hide Sidebar</HideWrapper>

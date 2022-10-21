@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { useModalStore } from "../../store/modalStore";
 
 const Backdrop = styled.div`
   background-color: rgba(0, 0, 0, 0.5);
@@ -9,7 +10,8 @@ const Backdrop = styled.div`
 `;
 
 const ModalBackdrop = () => {
-  return <Backdrop />;
+  const closeModal = useModalStore((state: any) => state.closeModal);
+  return <Backdrop onClick={closeModal} />;
 };
 
 export default ModalBackdrop;

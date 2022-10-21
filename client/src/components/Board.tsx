@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import Column from "./Column";
-import { IBoard, IColumn } from "../utils/types/DataTypes";
+import { IColumn } from "../utils/types/DataTypes";
 import { useDataStore } from "../store/store";
 import AddColumn from "./AddColumn";
 

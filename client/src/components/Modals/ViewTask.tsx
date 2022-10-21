@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { useModalStore } from "../../store/modalStore";
 import Checkbox from "../shared/Checkbox";
 import DropDown from "../shared/DropDown";
 import Select from "../shared/Select";
@@ -41,30 +42,30 @@ const CheckboxContainer = styled.div`
 `;
 
 const ViewTask = () => {
-  const [status, setStatus] = React.useState("g");
+  const openModal = useModalStore((state: any) => state.openModal);
+  const { detail, statusArr, boardTab } = useModalStore((state: any) => state);
+  const [status, setStatus] = React.useState(boardTab);
+
   return (
     <ViewTaskContainer>
       <TitleContainer>
-        <TaskTitle>View Task</TaskTitle>
-        <DropDown />
+        <TaskTitle>{detail.title}</TaskTitle>
+        <DropDown
+          text="task"
+          onClickEdit={() => openModal({ type: "Edit Task" })}
+          onClickDelete={() => openModal({ type: "Delete Task" })}
+        />
       </TitleContainer>
       <TaskDescription>
-        No description Lorem ipsum dolor sit amet consectetur adipisicing elit.
-        Quas ratione, quisquam id odio ad tenetur officiis dignissimos, fugiat
-        recusandae consectetur earum itaque suscipit cupiditate nisi, aspernatur
-        facere modi obcaecati nobis!
+        {detail.description || "No description."}
       </TaskDescription>
-      <Heading>Subtasks (0 of 2)</Heading>
+      <Heading>Subtasks (0 of {detail.subtasks.length})</Heading>
       <CheckboxContainer>
         <Checkbox checked>First SubTask</Checkbox>
         <Checkbox>Second SubTask</Checkbox>
       </CheckboxContainer>
       <Heading>Current Status</Heading>
-      <Select
-        options={["wring", "status", "jumbo", "one more thing onto it"]}
-        status={status}
-        setStatus={setStatus}
-      />
+      <Select options={statusArr} status={status} setStatus={setStatus} />
     </ViewTaskContainer>
   );
 };

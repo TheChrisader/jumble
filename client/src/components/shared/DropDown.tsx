@@ -4,7 +4,13 @@ import { FaEllipsisV } from "react-icons/fa";
 import useOnClickOutside from "../../utils/hooks/useOnClickOutside";
 
 interface IDropDown {
-  text: string;
+  text?: string;
+  onClickEdit: () => void;
+  onClickDelete: () => void;
+}
+
+interface IOption {
+  alt?: boolean;
 }
 
 const DropDownWrapper = styled.div`
@@ -28,6 +34,13 @@ const DropButton = styled.button`
   border: none;
   padding: 0;
   background-color: transparent;
+  border-radius: 50px;
+  padding: 5px;
+  transition: background-color 0.5s;
+
+  &:hover {
+    background-color: ${(props) => props.theme.colors.main.background};
+  }
 `;
 
 const DropIcon = styled(FaEllipsisV)`
@@ -49,15 +62,20 @@ const OptionsWrapper = styled.div`
   box-shadow: 0 5px 10px 5px rgb(0 0 0 / 10%), 0 1px 2px 0 rgb(0 0 0 / 6%);
 `;
 
-const Option = styled.button`
-  color: ${(props) => props.theme.colors.text.secondary};
+const Option = styled.button<IOption>`
+  color: ${(props) =>
+    props.alt
+      ? props.theme.colors.main.danger.light
+      : props.theme.colors.text.secondary};
   display: flex;
+  justify-content: center;
   width: 100%;
   border: none;
   border-radius: 10px;
   padding: 10px;
   background-color: transparent;
   font-size: 15px;
+  font-weight: 500;
   cursor: pointer;
   transition: background-color 0.25s ease;
 
@@ -66,7 +84,11 @@ const Option = styled.button`
   }
 `;
 
-const DropDown = () => {
+const DropDown: React.FC<IDropDown> = ({
+  text,
+  onClickEdit,
+  onClickDelete,
+}) => {
   const [openDropDown, setOpenDropDown] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -89,8 +111,25 @@ const DropDown = () => {
       </DropButton>
       {openDropDown && (
         <OptionsWrapper>
-          <Option type="button">Edit</Option>
-          <Option type="button">Delete</Option>
+          <Option
+            type="button"
+            onClick={() => {
+              onClickEdit();
+              setOpenDropDown(false);
+            }}
+          >
+            EDIT {text?.toUpperCase()}
+          </Option>
+          <Option
+            alt
+            type="button"
+            onClick={() => {
+              onClickDelete();
+              setOpenDropDown(false);
+            }}
+          >
+            DELETE {text?.toUpperCase()}
+          </Option>
         </OptionsWrapper>
       )}
     </DropDownWrapper>
