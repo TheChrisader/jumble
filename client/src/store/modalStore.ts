@@ -31,6 +31,7 @@ export const useModalStore = create(
           set((state: any) => ({ ...state, ...payload })),
 
         closeModal: () => set({ type: "" }),
+        setDetail: (payload: ITask) => set({ detail: payload }),
       }),
       { name: "modal" }
     ),

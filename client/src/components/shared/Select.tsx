@@ -107,7 +107,7 @@ const SelectFormik: React.FC<ISelect> = ({ name, options, status }) => {
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  const helpers = useField(name!)[2]; //eslint-disable-line
+  const helpers = useField(name!)[2];
 
   const { setValue } = helpers;
 

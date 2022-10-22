@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { useModalStore } from "../../store/modalStore";
+import { useDataStore } from "../../store/store";
 import { ISubtask } from "../../utils/types/DataTypes";
 import Checkbox from "../shared/Checkbox";
 import DropDown from "../shared/DropDown";
@@ -46,9 +47,35 @@ const CheckboxContainer = styled.div`
 `;
 
 const ViewTask = () => {
-  const openModal = useModalStore((state: any) => state.openModal);
-  const { detail, statusArr, boardTab } = useModalStore((state: any) => state);
-  const [status, setStatus] = React.useState(boardTab);
+  const { detail, statusArr, boardTab, openModal, setDetail } = useModalStore(
+    (state: any) => state
+  );
+  const { editTask } = useDataStore((state: any) => state);
+
+  const [status, setStatus] = React.useState(detail.status);
+  const [subtasks, setSubtasks] = React.useState(detail.subtasks);
+
+  const completed = subtasks.filter(
+    (subtask: ISubtask) => subtask.isCompleted === true
+  );
+
+  React.useEffect(() => {
+    const task = {
+      ...detail,
+      subtasks: subtasks,
+    };
+    editTask(boardTab, task, detail);
+    setDetail(task);
+  }, [subtasks]); //eslint-disable-line
+
+  React.useEffect(() => {
+    const task = {
+      ...detail,
+      status: status,
+    };
+    editTask(boardTab, task, detail);
+    setDetail(task);
+  }, [status]); //eslint-disable-line
 
   return (
     <ViewTaskContainer>
@@ -63,11 +90,21 @@ const ViewTask = () => {
       <TaskDescription>
         {detail.description || "No description."}
       </TaskDescription>
-      <Heading>Subtasks (0 of {detail.subtasks.length})</Heading>
+      <Heading>
+        Subtasks ({completed.length} of {detail.subtasks.length})
+      </Heading>
       <CheckboxContainer>
-        {detail.subtasks.map((subtask: ISubtask) => {
+        {detail.subtasks.map((subtask: ISubtask, i: number) => {
           return (
-            <Checkbox checked={subtask.isCompleted}>{subtask.title}</Checkbox>
+            <Checkbox
+              key={i}
+              index={i}
+              subtasks={subtasks}
+              setState={setSubtasks}
+              checked={subtask.isCompleted}
+            >
+              {subtask.title}
+            </Checkbox>
           );
         })}
       </CheckboxContainer>

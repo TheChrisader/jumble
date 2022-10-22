@@ -39,9 +39,8 @@ const Buttons = styled(Button)`
 
 const DeleteTask: React.FC<IDelete> = () => {
   const { type, detail } = useModalStore((state: any) => state);
-  const { boardTab, deleteTask, deleteBoard } = useDataStore(
-    (state: any) => state
-  );
+  const { data, boardTab, deleteTask, deleteBoard, setTab, setCurrentStatus } =
+    useDataStore((state: any) => state);
   const closeModal = useModalStore((state: any) => state.closeModal);
 
   const modalType = type.split(" ")[1];
@@ -51,6 +50,8 @@ const DeleteTask: React.FC<IDelete> = () => {
       deleteTask(boardTab, detail);
     } else {
       deleteBoard(boardTab);
+      setTab(data[0].name);
+      setCurrentStatus(data[0].name);
     }
     closeModal();
   };

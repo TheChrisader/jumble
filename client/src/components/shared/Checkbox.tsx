@@ -1,7 +1,13 @@
 import React from "react";
 import styled from "styled-components";
+import produce from "immer";
+
+import { ISubtask } from "../../utils/types/DataTypes";
 
 interface ICheckbox {
+  subtasks: ISubtask[];
+  setState: (state: ISubtask[]) => void;
+  index: number;
   children: string;
   checked?: boolean;
 }
@@ -83,15 +89,26 @@ const Label = styled.label<ILabel>`
 
 const Input = styled.input``;
 
-const Checkbox: React.FC<ICheckbox> = ({ children, checked }) => {
+const Checkbox: React.FC<ICheckbox> = ({
+  subtasks,
+  index,
+  setState,
+  children,
+  checked,
+}) => {
   const [check, setCheck] = React.useState(checked);
+
+  const handleChange = () => {
+    setCheck(!check);
+    const newSub = produce(subtasks, (draft) => {
+      draft[index].isCompleted = !check;
+      return draft;
+    });
+    setState(newSub);
+  };
   return (
     <Label checked={check}>
-      <Input
-        type="checkbox"
-        checked={check}
-        onChange={() => setCheck(!check)}
-      />
+      <Input type="checkbox" checked={check} onChange={handleChange} />
       {children}
     </Label>
   );

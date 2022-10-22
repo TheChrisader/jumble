@@ -77,7 +77,7 @@ const Submit = styled(Button)`
 `;
 
 const NewTask = () => {
-  const { detail, statusArr, boardTab, closeModal } = useModalStore(
+  const { statusArr, boardTab, closeModal } = useModalStore(
     (state: any) => state
   );
   const { addTask } = useDataStore((state: any) => state);
@@ -91,7 +91,7 @@ const NewTask = () => {
         isCompleted: false,
       },
     ] as ISubtask[],
-    status: detail.status,
+    status: statusArr[0],
   };
 
   return (

@@ -9,6 +9,7 @@ import Button from "../shared/Button";
 import { IBoard, IColumn } from "../../utils/types/DataTypes";
 import { useDataStore } from "../../store/store";
 import { useModalStore } from "../../store/modalStore";
+import { NewBoardSchema } from "../../utils/Form";
 
 const Container = styled.div`
   display: flex;
@@ -63,19 +64,24 @@ const DeleteColumn = styled.button`
 const NewColumnButton = styled(Button)`
   align-self: center;
   margin-top: 10px;
-  margin-bottom: 50px;
+  margin-bottom: 20px;
   width: 100%;
 `;
 
 const Submit = styled(Button)`
   align-self: center;
   border-radius: 5px;
-  margin-top: 30px;
 `;
 
 const EditBoard = () => {
-  const { data, currentBoardStatus, boardTab, editBoard, setCurrentStatus } =
-    useDataStore((state: any) => state);
+  const {
+    data,
+    currentBoardStatus,
+    boardTab,
+    editBoard,
+    setCurrentStatus,
+    setTab,
+  } = useDataStore((state: any) => state);
   const { closeModal } = useModalStore((state: any) => state);
 
   const board = data.find((item: IBoard) => item.name === boardTab);
@@ -90,18 +96,21 @@ const EditBoard = () => {
       <Title>Edit Board</Title>
       <Formik
         initialValues={initialValues}
+        validationSchema={NewBoardSchema}
         onSubmit={(values) => {
           const newBoard = {
             ...board,
             name: values.name,
-            columns: values.columns.map((column: IColumn, i: number) => ({
+            columns: values.columns.map((column: string, i: number) => ({
               ...board.columns[i],
-              id: board.columns[i].id || nanoid(4),
+              id: board?.columns[i]?.id || nanoid(3),
               name: column,
+              tasks: board?.columns[i]?.tasks || [],
             })),
           };
           editBoard(boardTab, newBoard);
-          setCurrentStatus(boardTab);
+          setCurrentStatus(values.name);
+          setTab(values.name);
           closeModal();
         }}
       >
@@ -130,12 +139,15 @@ const EditBoard = () => {
                           );
                         }
                       )}
-                      <NewColumnButton
-                        type="button"
-                        onClick={() => arrayHelpers.push("")}
-                      >
-                        Create a New Column
-                      </NewColumnButton>
+                      {values.values.columns.length < 5 && (
+                        <NewColumnButton
+                          type="button"
+                          variant="outlined"
+                          onClick={() => arrayHelpers.push("")}
+                        >
+                          Create a New Column
+                        </NewColumnButton>
+                      )}
                     </>
                   );
                 }}

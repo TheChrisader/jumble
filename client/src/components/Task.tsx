@@ -2,7 +2,7 @@ import React, { memo } from "react";
 import styled from "styled-components";
 import { Draggable } from "react-beautiful-dnd";
 
-import { ITask } from "../utils/types/DataTypes";
+import { ISubtask, ITask } from "../utils/types/DataTypes";
 import { useModalStore } from "../store/modalStore";
 import { useDataStore } from "../store/store";
 
@@ -46,6 +46,11 @@ const Task: React.FC<ITaskComponent> = ({ task, index }) => {
   const openModal = useModalStore((state: any) => state.openModal);
   const statusArr = useDataStore((state: any) => state.currentBoardStatus);
   const boardTab = useDataStore((state: any) => state.boardTab);
+
+  const completed = task?.subtasks?.filter(
+    (subtask: ISubtask) => subtask.isCompleted === true
+  );
+
   return (
     <Draggable key={task.id} draggableId={task.id} index={index}>
       {(provided, snapshot) => {
@@ -66,7 +71,9 @@ const Task: React.FC<ITaskComponent> = ({ task, index }) => {
             }
           >
             <TaskTitle>{task.title}</TaskTitle>
-            <Subtasks>0 of 2 subtasks completed</Subtasks>
+            <Subtasks>
+              {completed?.length} of {task?.subtasks?.length} subtasks completed
+            </Subtasks>
           </TaskCard>
         );
       }}

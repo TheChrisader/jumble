@@ -22,5 +22,12 @@ export const NewBoardSchema = Yup.object().shape({
     .min(3, "- Name is too short.")
     .max(100, "- Name over 100 character limit")
     .required("- Please give the board a name"),
-  columns: Yup.array().min(1, "- Please input a column"),
+  columns: Yup.array()
+    .of(
+      Yup.string()
+        .min(1, "- Please input a column")
+        .required("- Please input a column")
+    )
+    .min(1, "- Please input a column")
+    .required("- Please input a column"),
 });

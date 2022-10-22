@@ -45,13 +45,13 @@ const Column: React.FC<IColumnComponent> = ({ droppableId, column, index }) => {
   return (
     <ColumnWrapper>
       <ColumnHeader>
-        {column.name}({column.tasks.length})
+        {column.name}({column?.tasks?.length})
       </ColumnHeader>
       <Droppable droppableId={droppableId} key={droppableId}>
         {(provided, snapshot) => {
           return (
             <TasksWrapper
-              empty={column.tasks.length === 0}
+              empty={column?.tasks?.length === 0}
               {...provided.droppableProps}
               ref={provided.innerRef}
             >

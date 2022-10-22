@@ -58,7 +58,7 @@ const Navbar = () => {
   return (
     <NavbarWrapper>
       <NavbarLogoWrapper>
-        <LogoText>frugal</LogoText>
+        <LogoText>jumble</LogoText>
       </NavbarLogoWrapper>
       <Header>
         <Tab>{boardTab}</Tab>
