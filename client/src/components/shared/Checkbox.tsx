@@ -82,7 +82,7 @@ const Label = styled.label<ILabel>`
 const Input = styled.input``;
 
 const Checkbox: React.FC<ICheckbox> = ({ children, checked }) => {
-  const [check, setCheck] = React.useState(false);
+  const [check, setCheck] = React.useState(checked);
   return (
     <Label checked={check}>
       <Input

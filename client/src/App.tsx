@@ -43,7 +43,7 @@ function App() {
   return (
     <ThemeProvider theme={updateTheme(theme, lightTheme)}>
       <AppWrapper>
-        {modal !== "" && <Modal type={modal} />}
+        <Modal type={modal} />
         <Navbar />
         <Main data={boards} />
       </AppWrapper>

@@ -17,6 +17,7 @@ const Popup = styled.div`
   width: 40%;
   max-height: 100%;
   overflow-y: auto;
+  pointer-events: auto;
   transition: width 0.5s ease;
 
   @media screen and (max-width: 800px) {

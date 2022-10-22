@@ -1,5 +1,6 @@
 import React, { useState, useRef, useCallback } from "react";
 import styled from "styled-components";
+import { useField } from "formik";
 import { FaChevronDown } from "react-icons/fa";
 
 import useOnClickOutside from "../../utils/hooks/useOnClickOutside";
@@ -7,7 +8,8 @@ import useOnClickOutside from "../../utils/hooks/useOnClickOutside";
 interface ISelect {
   options: string[];
   status: string;
-  setStatus: React.Dispatch<React.SetStateAction<string>>;
+  name?: string;
+  setStatus?: React.Dispatch<React.SetStateAction<string>>;
 }
 
 interface ITrigger {
@@ -101,12 +103,16 @@ const Option = styled.button`
 
 const OptionText = styled.span``;
 
-const Select: React.FC<ISelect> = ({ options, status, setStatus }) => {
+const SelectFormik: React.FC<ISelect> = ({ name, options, status }) => {
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
+  const helpers = useField(name!)[2]; //eslint-disable-line
+
+  const { setValue } = helpers;
+
   const handleChange = (item: string) => {
-    setStatus(item);
+    setValue(item);
     setOpen(false);
   };
 
@@ -121,7 +127,12 @@ const Select: React.FC<ISelect> = ({ options, status, setStatus }) => {
 
   return (
     <SelectWrapper ref={dropdownRef}>
-      <Trigger role="combobox" open={open} onClick={() => setOpen(!open)}>
+      <Trigger
+        type="button"
+        role="combobox"
+        open={open}
+        onClick={() => setOpen(!open)}
+      >
         <TriggerText open={open}>{status}</TriggerText>
         <TriggerIcon open={open} />
       </Trigger>
@@ -130,6 +141,7 @@ const Select: React.FC<ISelect> = ({ options, status, setStatus }) => {
           {options.map((item: string, index: number) => (
             <Option
               role="option"
+              type="button"
               key={index}
               onClick={() => handleChange(item)}
             >
@@ -140,6 +152,65 @@ const Select: React.FC<ISelect> = ({ options, status, setStatus }) => {
       )}
     </SelectWrapper>
   );
+};
+
+const SelectUseState: React.FC<ISelect> = ({ options, status, setStatus }) => {
+  const [open, setOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  const handleChange = (item: string) => {
+    setStatus!(item);
+    setOpen(false);
+  };
+
+  const handleClickOutside = useCallback(() => {
+    setOpen(false);
+  }, []);
+
+  useOnClickOutside(
+    dropdownRef as React.MutableRefObject<HTMLDivElement>,
+    handleClickOutside
+  );
+
+  return (
+    <SelectWrapper ref={dropdownRef}>
+      <Trigger
+        type="button"
+        role="combobox"
+        open={open}
+        onClick={() => setOpen(!open)}
+      >
+        <TriggerText open={open}>{status}</TriggerText>
+        <TriggerIcon open={open} />
+      </Trigger>
+      {open && (
+        <OptionsWrapper>
+          {options.map((item: string, index: number) => (
+            <Option
+              role="option"
+              type="button"
+              key={index}
+              onClick={() => handleChange(item)}
+            >
+              <OptionText>{item}</OptionText>
+            </Option>
+          ))}
+        </OptionsWrapper>
+      )}
+    </SelectWrapper>
+  );
+};
+
+const Select: React.FC<ISelect> = ({ name, options, status, setStatus }) => {
+  if (name) {
+    return <SelectFormik name={name} options={options} status={status} />;
+  } else if (setStatus) {
+    return (
+      <SelectUseState options={options} status={status} setStatus={setStatus} />
+    );
+  } else {
+    return <></>;
+  }
 };
 
 export default Select;

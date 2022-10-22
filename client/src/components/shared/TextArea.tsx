@@ -15,11 +15,11 @@ const InputWrapper = styled.label`
   display: flex;
   flex-direction: column;
   width: 100%;
-  margin-bottom: 40px;
+  margin-bottom: 20px;
 `;
 
 const InputLabel = styled.span`
-  color: ${(props) => props.theme.colors.text.primary};
+  color: ${(props) => props.theme.colors.text.secondary};
   font-weight: 400;
   margin-bottom: 5px;
 `;

@@ -10,7 +10,7 @@ interface IDropDown {
 }
 
 interface IOption {
-  alt?: boolean;
+  $alt?: boolean;
 }
 
 const DropDownWrapper = styled.div`
@@ -64,7 +64,7 @@ const OptionsWrapper = styled.div`
 
 const Option = styled.button<IOption>`
   color: ${(props) =>
-    props.alt
+    props.$alt
       ? props.theme.colors.main.danger.light
       : props.theme.colors.text.secondary};
   display: flex;
@@ -121,7 +121,7 @@ const DropDown: React.FC<IDropDown> = ({
             EDIT {text?.toUpperCase()}
           </Option>
           <Option
-            alt
+            $alt
             type="button"
             onClick={() => {
               onClickDelete();

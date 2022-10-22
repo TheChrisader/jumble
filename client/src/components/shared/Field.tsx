@@ -3,7 +3,7 @@ import { useField, ErrorMessage as FormikError, FieldInputProps } from "formik";
 import styled from "styled-components";
 
 interface IField extends React.ComponentPropsWithoutRef<"input"> {
-  label: string;
+  label?: string;
   name: string;
 }
 
@@ -19,13 +19,13 @@ const InputWrapper = styled.label`
 `;
 
 const InputLabel = styled.span`
-  color: ${(props) => props.theme.colors.text.primary};
+  color: ${(props) => props.theme.colors.text.secondary};
   font-weight: 400;
   margin-bottom: 5px;
 `;
 
 const Input = styled.input<IInput>`
-  height: 45px;
+  height: 35px;
   max-width: 100%;
   min-width: 100%;
   color: ${(props) => props.theme.colors.text.primary};
@@ -57,7 +57,7 @@ const Field: React.FC<IField> = ({ label, name, ...props }) => {
   return (
     <>
       <InputWrapper>
-        <InputLabel>{label}</InputLabel>
+        {label && <InputLabel>{label}</InputLabel>}
 
         <Input {...field} valid={!(meta.touched && meta.error)} {...props} />
         <ErrorMessage name={name} component="span" />

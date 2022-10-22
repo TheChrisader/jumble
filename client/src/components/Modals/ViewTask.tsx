@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { useModalStore } from "../../store/modalStore";
+import { ISubtask } from "../../utils/types/DataTypes";
 import Checkbox from "../shared/Checkbox";
 import DropDown from "../shared/DropDown";
 import Select from "../shared/Select";
@@ -61,8 +62,11 @@ const ViewTask = () => {
       </TaskDescription>
       <Heading>Subtasks (0 of {detail.subtasks.length})</Heading>
       <CheckboxContainer>
-        <Checkbox checked>First SubTask</Checkbox>
-        <Checkbox>Second SubTask</Checkbox>
+        {detail.subtasks.map((subtask: ISubtask) => {
+          return (
+            <Checkbox checked={subtask.isCompleted}>{subtask.title}</Checkbox>
+          );
+        })}
       </CheckboxContainer>
       <Heading>Current Status</Heading>
       <Select options={statusArr} status={status} setStatus={setStatus} />

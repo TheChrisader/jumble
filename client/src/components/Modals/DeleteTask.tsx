@@ -60,7 +60,7 @@ const DeleteTask: React.FC<IDelete> = () => {
       <DeleteText>
         Are you sure you want to delete the '
         {modalType === "Task" ? detail.title : boardTab}'{" "}
-        {modalType.toLowerCase()}? This action will remove{" "}
+        {modalType?.toLowerCase()}? This action will remove{" "}
         {modalType === "Board" ? " all columns and tasks" : "this task"} and
         cannot be reversed.
       </DeleteText>
