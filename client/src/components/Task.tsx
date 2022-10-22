@@ -20,11 +20,13 @@ const TaskCard = styled.div<ITaskCard>`
   padding: 10px 20px;
   min-height: 50px;
   background-color: ${(props) => props.theme.colors.main.white};
-  color: ${(props) => props.theme.colors.main.primary.default};
+  color: ${(props) =>
+    props.theme.mode === "light"
+      ? props.theme.colors.main.primary.default
+      : props.theme.colors.main.primary.light};
   border-radius: 5px;
   box-shadow: 0 5px 5px 0 rgb(0 0 0 / 10%), 0 1px 2px 0 rgb(0 0 0 / 6%);
   cursor: drag;
-  border: 1px solid ${(props) => props.theme.colors.main.border};
   margin-bottom: 20px;
 `;
 

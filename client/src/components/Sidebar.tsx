@@ -68,7 +68,10 @@ const BoardItem = styled.button<IBoardItem>`
 `;
 
 const CreateBoard = styled.button`
-  color: ${(props) => props.theme.colors.main.primary.default};
+  color: ${(props) =>
+    props.theme.mode === "light"
+      ? props.theme.colors.main.primary.default
+      : props.theme.colors.main.primary.light};
   padding: 10px;
   border-radius: 10px;
   margin-top: 10px;

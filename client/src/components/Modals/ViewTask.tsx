@@ -22,7 +22,10 @@ const TaskTitle = styled.h1`
   font-weight: 600;
   margin-bottom: 10px;
   font-size: 25px;
-  color: ${(props) => props.theme.colors.main.primary.default};
+  color: ${(props) =>
+    props.theme.mode === "light"
+      ? props.theme.colors.main.primary.default
+      : props.theme.colors.main.primary.light};
 `;
 
 const TaskDescription = styled.span`

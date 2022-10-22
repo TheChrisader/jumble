@@ -26,17 +26,17 @@ const ColorItem = styled.button`
 const themeColorArray = [
   {
     id: 0,
-    name: "lightTheme",
-    color: "#F8F8FB",
+    name: "light",
+    color: "#e9e9ec",
   },
   {
     id: 1,
-    name: "darkTheme",
-    color: "141625",
+    name: "dark",
+    color: "#0e0f19",
   },
   {
     id: 2,
-    name: "blueTheme",
+    name: "blue",
     color: "141625",
   },
 ];

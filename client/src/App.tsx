@@ -3,7 +3,7 @@ import styled, { ThemeProvider } from "styled-components";
 import Navbar from "./components/Navbar";
 import Main from "./pages/Main";
 
-import { lightTheme } from "./theme";
+import { lightTheme, darkTheme } from "./theme";
 import { checkStorageKey, updateTheme } from "./utils/helpers";
 import { useThemeStore } from "./store/themeStore";
 import { useDataStore } from "./store/store";
@@ -41,7 +41,7 @@ function App() {
   }, [theme]); //eslint-disable-line
 
   return (
-    <ThemeProvider theme={updateTheme(theme, lightTheme)}>
+    <ThemeProvider theme={updateTheme(theme, lightTheme, darkTheme)}>
       <AppWrapper>
         <Modal type={modal} />
         <Navbar />

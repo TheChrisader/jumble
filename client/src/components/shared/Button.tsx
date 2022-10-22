@@ -39,7 +39,10 @@ const ButtonComponent = styled.button<IButtonComponent>`
 `;
 
 const OutlinedButton = styled(ButtonComponent)`
-  color: ${({ color, ...props }) => props.theme.colors.main[color].default};
+  color: ${({ color, ...props }) =>
+    props.theme.light === "light"
+      ? props.theme.colors.main[color].default
+      : props.theme.colors.main[color].light};
   font-weight: 600;
   border: 1px dashed
     ${({ color, ...props }) => props.theme.colors.main[color].light};

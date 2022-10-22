@@ -19,7 +19,10 @@ const Container = styled.div`
 `;
 
 const Title = styled.h2`
-  color: ${(props) => props.theme.colors.main.primary.default};
+  color: ${(props) =>
+    props.theme.mode === "light"
+      ? props.theme.colors.main.primary.default
+      : props.theme.colors.main.primary.light};
   margin-bottom: 20px;
   font-weight: 400;
 `;
@@ -62,7 +65,8 @@ const DeleteSubtask = styled.button`
 
 const NewSubtaskButton = styled(Button)`
   align-self: center;
-  margin-bottom: 40px;
+  margin-top: 10px;
+  margin-bottom: 50px;
   width: 100%;
 `;
 

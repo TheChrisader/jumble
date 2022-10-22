@@ -36,7 +36,8 @@ const TasksWrapper = styled.div<ITasksWrapper>`
   flex-direction: column;
   width: 300px;
   height: 100%;
-  border: ${(props) => (props.empty ? "2px dashed #ccc" : "none")};
+  border: ${(props) =>
+    props.empty ? `2px dashed ${props.theme.colors.main.border} ` : ` none`};
   border-radius: 5px;
 `;
 
