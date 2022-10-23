@@ -29,6 +29,7 @@ const SidebarWrapper = styled(motion.aside)`
   border-top: none;
   z-index: 20;
   cursor: default;
+  overflow-y: auto;
 `;
 
 const BoardCount = styled.h3`
