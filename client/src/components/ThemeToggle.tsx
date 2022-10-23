@@ -37,7 +37,7 @@ const themeColorArray = [
   {
     id: 2,
     name: "blue",
-    color: "141625",
+    color: "#0288d1",
   },
 ];
 

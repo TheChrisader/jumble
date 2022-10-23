@@ -73,3 +73,41 @@ export const darkTheme = {
     },
   },
 };
+
+export const blueTheme = {
+  mode: "blue",
+  colors: {
+    main: {
+      primary: {
+        default: "#0074a9",
+        light: "#03a9f4",
+        dark: "#01579b",
+        border: "#dfe3fa",
+        background: "#0289d13e",
+      },
+      success: {
+        default: "#19c289",
+        light: "#00e676",
+        dark: "#388e3c",
+        border: "#2caf9e",
+        background: "#2cd69d18",
+      },
+      danger: {
+        default: "#d50000",
+        light: "#e53935",
+        dark: "#b71c1c",
+        border: "#af2121",
+        background: "#ec57571c",
+      },
+      border: "#a8a8a86c",
+      background: "#e9e9ec",
+      white: "#FFFFFF",
+    },
+    text: {
+      primary: "#0C0E16",
+      secondary: "#71727a",
+      white: "#FFFFFF",
+      black: "#212121",
+    },
+  },
+};

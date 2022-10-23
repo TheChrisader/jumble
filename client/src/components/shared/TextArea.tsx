@@ -32,7 +32,7 @@ const StyledTextArea = styled.textarea<IInput>`
   min-width: 100%;
   color: ${(props) => props.theme.colors.text.primary};
   background-color: ${(props) =>
-    props.theme.mode === "light"
+    props.theme.mode !== "dark"
       ? props.theme.colors.main.white
       : props.theme.colors.main.primary.dark};
   border: 1px solid

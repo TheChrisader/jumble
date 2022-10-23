@@ -21,7 +21,7 @@ const TaskCard = styled.div<ITaskCard>`
   min-height: 50px;
   background-color: ${(props) => props.theme.colors.main.white};
   color: ${(props) =>
-    props.theme.mode === "light"
+    props.theme.mode !== "dark"
       ? props.theme.colors.main.primary.default
       : props.theme.colors.main.primary.light};
   border-radius: 5px;
