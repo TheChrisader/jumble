@@ -15,6 +15,11 @@ const BoardWrapper = styled.div`
   padding: 40px;
   gap: 35px;
   min-height: 100%;
+  transition: left 0.5s;
+
+  @media screen and (max-width: 900px) {
+    left: 0;
+  }
 `;
 
 const Board: React.FC<IBoardComponent> = () => {

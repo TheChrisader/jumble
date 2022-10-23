@@ -1,9 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
+import { motion, AnimatePresence } from "framer-motion";
+import { BsEyeFill } from "react-icons/bs";
+
 import { useModalStore } from "../store/modalStore";
 import { useDataStore } from "../store/store";
 import { IBoard } from "../utils/types/DataTypes";
 import ThemeToggle from "./ThemeToggle";
+import useMediaQuery from "../utils/hooks/useMediaQuery";
 
 interface ISidebar {}
 
@@ -11,7 +15,7 @@ interface IBoardItem {
   selected: boolean;
 }
 
-const SidebarWrapper = styled.section`
+const SidebarWrapper = styled(motion.aside)`
   display: flex;
   flex-direction: column;
   position: fixed;
@@ -89,13 +93,55 @@ const CreateBoard = styled.button`
   }
 `;
 
-const HideWrapper = styled.div`
+const HideToggle = styled.button`
   padding: 10px;
   display: flex;
+  justify-content: center;
   color: ${(props) => props.theme.colors.text.secondary};
   font-weight: 500;
   margin-bottom: 10px;
+  background-color: transparent;
+  border: 1px dashed ${(props) => props.theme.colors.main.primary.default};
+  cursor: pointer;
+
+  &:active {
+    background-color: ${(props) => props.theme.colors.main.primary.background};
+  }
 `;
+
+const ShowToggle = styled.button`
+  position: fixed;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  z-index: 20;
+  left: 0;
+  bottom: 80px;
+  border: none;
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
+  color: ${(props) => props.theme.colors.text.white};
+  background-color: ${(props) => props.theme.colors.main.primary.light};
+`;
+
+const animation = {
+  hidden: {
+    x: "-100%",
+    transition: {
+      type: "spring",
+      duration: 0.5,
+    },
+  },
+  visible: {
+    x: 0,
+    transition: {
+      type: "spring",
+      duration: 0.5,
+      delay: 0.15,
+    },
+  },
+};
 
 const Sidebar: React.FC<ISidebar> = () => {
   const boards = useDataStore((state: any) => state.data);
@@ -103,29 +149,49 @@ const Sidebar: React.FC<ISidebar> = () => {
   const setTab = useDataStore((state: any) => state.setTab);
   const setStatus = useDataStore((state: any) => state.setCurrentStatus);
   const openModal = useModalStore((state: any) => state.openModal);
+
+  const shouldHideSidebar = useMediaQuery("(max-width: 900px)");
+  const [isHidden, setIsHidden] = useState(shouldHideSidebar);
   return (
-    <SidebarWrapper>
-      <BoardCount>ALL BOARDS ({boards.length})</BoardCount>
-      <BoardList>
-        {boards.map((board: IBoard, i: number) => (
-          <BoardItem
-            selected={boardTab === board.name}
-            key={i}
-            onClick={() => {
-              setTab(board.name);
-              setStatus(board.name);
-            }}
-          >
-            {board.name}
-          </BoardItem>
-        ))}
-        <CreateBoard onClick={() => openModal({ type: "New Board" })}>
-          +Create a New Board
-        </CreateBoard>
-      </BoardList>
-      <ThemeToggle />
-      <HideWrapper>Hide Sidebar</HideWrapper>
-    </SidebarWrapper>
+    <AnimatePresence>
+      {!isHidden && (
+        <SidebarWrapper
+          variants={animation}
+          initial="hidden"
+          animate="visible"
+          exit="hidden"
+          key="sidebar"
+        >
+          <BoardCount>ALL BOARDS ({boards.length})</BoardCount>
+          <BoardList>
+            {boards.map((board: IBoard, i: number) => (
+              <BoardItem
+                selected={boardTab === board.name}
+                key={i}
+                onClick={() => {
+                  setTab(board.name);
+                  setStatus(board.name);
+                }}
+              >
+                {board.name}
+              </BoardItem>
+            ))}
+            <CreateBoard onClick={() => openModal({ type: "New Board" })}>
+              +Create a New Board
+            </CreateBoard>
+          </BoardList>
+          <ThemeToggle />
+          <HideToggle type="button" onClick={() => setIsHidden(true)}>
+            Hide Sidebar
+          </HideToggle>
+        </SidebarWrapper>
+      )}
+      {isHidden && (
+        <ShowToggle type="button" onClick={() => setIsHidden(false)}>
+          Show Sidebar <BsEyeFill />
+        </ShowToggle>
+      )}
+    </AnimatePresence>
   );
 };
 

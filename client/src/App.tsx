@@ -23,7 +23,7 @@ function App() {
 
   const boards = useDataStore((state: any) => state.data);
   const setBoards = useDataStore((state: any) => state.setData);
-  const setTab = useDataStore((state: any) => state.setTab);
+  const { setTab, setCurrentStatus } = useDataStore((state: any) => state);
 
   const modal = useModalStore((state: any) => state.type);
 
@@ -31,6 +31,7 @@ function App() {
     const response = await import("./utils/data.json");
     setBoards(response.boards);
     setTab(response.boards[0].name);
+    setCurrentStatus(response.boards[0].name);
   };
 
   useEffect(() => {

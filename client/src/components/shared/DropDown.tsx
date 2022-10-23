@@ -49,8 +49,8 @@ const DropIcon = styled(FaEllipsisV)`
 
 const OptionsWrapper = styled.div`
   position: absolute;
-  top: 180%;
-  left: -450%;
+  top: 120%;
+  left: -400%;
   display: flex;
   gap: 5px;
   align-items: flex-start;
