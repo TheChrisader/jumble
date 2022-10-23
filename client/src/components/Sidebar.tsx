@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { motion, AnimatePresence } from "framer-motion";
 import { BsEyeFill } from "react-icons/bs";
@@ -152,6 +152,11 @@ const Sidebar: React.FC<ISidebar> = () => {
 
   const shouldHideSidebar = useMediaQuery("(max-width: 900px)");
   const [isHidden, setIsHidden] = useState(shouldHideSidebar);
+
+  useEffect(() => {
+    setIsHidden(shouldHideSidebar);
+  }, [shouldHideSidebar]);
+
   return (
     <AnimatePresence>
       {!isHidden && (
@@ -181,9 +186,11 @@ const Sidebar: React.FC<ISidebar> = () => {
             </CreateBoard>
           </BoardList>
           <ThemeToggle />
-          <HideToggle type="button" onClick={() => setIsHidden(true)}>
-            Hide Sidebar
-          </HideToggle>
+          {shouldHideSidebar && (
+            <HideToggle type="button" onClick={() => setIsHidden(true)}>
+              Hide Sidebar
+            </HideToggle>
+          )}
         </SidebarWrapper>
       )}
       {isHidden && (
