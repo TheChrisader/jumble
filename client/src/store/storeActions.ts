@@ -112,38 +112,42 @@ export const onEditTask = (
   newTask: ITask,
   oldTask: ITask
 ) => {
-  const data = state.data;
+  try {
+    const data = state.data;
 
-  const board = data.find((item) => item.name === boardTab);
+    const board = data.find((item) => item.name === boardTab);
 
-  const oldBoardIndex = data.findIndex((item) => item.name === boardTab);
+    const oldBoardIndex = data.findIndex((item) => item.name === boardTab);
 
-  const oldColumnIndex = board!.columns.findIndex((item) =>
-    item.tasks.find((task) => task.id === oldTask.id)
-  );
+    const oldColumnIndex = board!.columns.findIndex((item) =>
+      item.tasks.find((task) => task.id === oldTask.id)
+    );
 
-  const newColumnIndex = board!.columns.findIndex(
-    (item) => item.name === newTask.status
-  );
+    const newColumnIndex = board!.columns.findIndex(
+      (item) => item.name === newTask.status
+    );
 
-  const taskIndex = board!.columns[oldColumnIndex].tasks.findIndex(
-    (task) => task.id === oldTask.id
-  );
+    const taskIndex = board!.columns[oldColumnIndex].tasks.findIndex(
+      (task) => task.id === oldTask.id
+    );
 
-  const newState = produce(data, (draft) => {
-    if (
-      newTask.status?.toLowerCase() !== oldTask.status?.toLowerCase() ||
-      oldColumnIndex !== newColumnIndex
-    ) {
-      draft[oldBoardIndex].columns[oldColumnIndex].tasks.splice(taskIndex, 1);
+    const newState = produce(data, (draft) => {
+      if (
+        newTask.status?.toLowerCase() !== oldTask.status?.toLowerCase() ||
+        oldColumnIndex !== newColumnIndex
+      ) {
+        draft[oldBoardIndex].columns[oldColumnIndex].tasks.splice(taskIndex, 1);
 
-      draft[oldBoardIndex].columns[newColumnIndex].tasks.push(newTask);
-    } else {
-      draft[oldBoardIndex].columns[oldColumnIndex].tasks[taskIndex] = newTask;
-    }
-  });
+        draft[oldBoardIndex].columns[newColumnIndex].tasks.push(newTask);
+      } else {
+        draft[oldBoardIndex].columns[oldColumnIndex].tasks[taskIndex] = newTask;
+      }
+    });
 
-  return { ...state, data: newState };
+    return { ...state, data: newState };
+  } catch (err) {
+    console.error(err);
+  }
 };
 
 export const onDeleteBoard = (state: DataState, boardTab: string) => {
