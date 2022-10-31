@@ -1,4 +1,4 @@
-# Frugal - Expense Tracker
+# jumble - A Task Tracking Application
 
 <!-- TABLE OF CONTENTS -->
 <details open="open">
