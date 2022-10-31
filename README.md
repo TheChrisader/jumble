@@ -68,6 +68,8 @@ To start up the app on your localhost server, run
 * Refactor the Zustand stores.
 * Clean up the components logic.
 * Add end-to-end tests with Cypress.
+* Implement functionality to allow the user backup their boards to the cloud, so they can access it from an device.
+* Add the option to share boards with other users, to allow for collaboration.
 
 ## Challenges
 
